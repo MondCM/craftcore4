@@ -30,14 +30,57 @@
   .poi { position:absolute; left:0; top:0; will-change:transform; pointer-events:auto; cursor:pointer; }
   .poi-icon svg { display:block; filter: drop-shadow(0 3px 0 rgba(0,0,0,.55)) drop-shadow(0 0 8px rgba(245,158,11,.55)); transition: transform .15s; }
   .poi:hover .poi-icon svg { transform: scale(1.18); }
-  .poi-label { position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:3px; font:700 10px/1 ui-monospace,monospace; letter-spacing:.08em; text-transform:uppercase; color:#fff; white-space:nowrap; text-shadow:1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000,-1px -1px 0 #000; }
+  .poi-label { position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:2px; font:600 10px/1 system-ui,sans-serif; color:#fff; white-space:nowrap; text-shadow:0 1px 3px #000,0 0 2px #000; }
   #map-wrapper { transition: none !important; }
   section[id] { scroll-margin-top: 80px; }
-  #nav-pill { position:absolute; top:0; bottom:0; left:0; width:0; border-radius:999px; background:rgba(245,158,11,.16); border:1px solid rgba(245,158,11,.5); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 6px 18px rgba(0,0,0,.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity:0; pointer-events:none; transition: opacity .3s ease, transform .18s cubic-bezier(.22,1,.36,1), width .18s cubic-bezier(.22,1,.36,1); }
+  #nav-pill { position:absolute; top:-2px; bottom:-2px; left:0; width:0; border-radius:999px; background:rgba(245,158,11,.16); border:1px solid rgba(245,158,11,.5); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 6px 18px rgba(0,0,0,.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity:0; pointer-events:none; transition: opacity .3s ease, transform .18s cubic-bezier(.22,1,.36,1), width .18s cubic-bezier(.22,1,.36,1); }
   #main-nav { position:relative; }
   .nav-link { position:relative; z-index:1; padding:8px 14px; border-radius:999px; transition: color .25s; }
   .nav-link:hover { color:#fff; }
   .nav-link.active { color:#fbbf24; }
+
+  /* ===== Frischer, aber gleicher Stil: Amber statt Grau ===== */
+  :root { --amber:#f59e0b; --amber-soft:#fbbf24; }
+  .sec-title { display:flex; align-items:center; gap:.7rem; }
+  .sec-ico { display:inline-flex; align-items:center; justify-content:center; width:2.6rem; height:2.6rem; border-radius:.85rem; flex:none; font-size:1.1rem; color:#1c1b19; background:linear-gradient(145deg,#fcd34d,#f59e0b); box-shadow:0 6px 18px rgba(245,158,11,.28), inset 0 1px 0 rgba(255,255,255,.5); }
+  .card-ico { display:inline-flex; align-items:center; justify-content:center; width:1.9rem; height:1.9rem; border-radius:.6rem; font-size:.85rem; color:#fbbf24; background:rgba(245,158,11,.14); border:1px solid rgba(245,158,11,.35); margin-right:.5rem; vertical-align:middle; }
+  #bestenlisten [class*="bg-white/5"], #live [class*="bg-white/5"], #abstimmung [class*="bg-white/5"], #shop-teaser [class*="bg-white/5"] { background-image:linear-gradient(160deg, rgba(245,158,11,.10), rgba(245,158,11,.02) 55%); background-color:rgba(255,255,255,.03); }
+  #bestenlisten [class*="border-white/10"], #live [class*="border-white/10"], #abstimmung [class*="border-white/10"] { border-color:rgba(245,158,11,.22); }
+  #bestenlisten [class*="text-white/60"], #live [class*="text-white/50"] { color:rgba(255,243,208,.62); }
+  #bestenlisten [class*="text-stone-"], #live [class*="text-stone-"], #abstimmung [class*="text-stone-"] { color:#d9c9a3; }
+  #live [class*="bg-stone-900"] { background-color:#24211c; }
+  #live .rounded-2xl, #abstimmung .rounded-2xl, #bestenlisten .rounded-2xl { box-shadow:0 10px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04); }
+  #abstimmung [class*="bg-stone-8"], #abstimmung [class*="bg-stone-9"] { background-color:#2a251d; }
+  #abstimmung button[class*="bg-white"], #abstimmung button[class*="bg-stone"] { border:1px solid rgba(245,158,11,.35); color:#fde68a; }
+  #abstimmung [class*="bg-stone-700"], #abstimmung [class*="bg-stone-600"] { background:rgba(245,158,11,.15) !important; }
+  #lb-tabs button:not(.bg-amber-500) { border-color:rgba(245,158,11,.3); color:#fde68a; }
+  #lb-tabs button:not(.bg-amber-500):hover { background:rgba(245,158,11,.14); }
+  #lb-tabs button i { margin-right:.4rem; }
+  .nav-link.active { text-shadow:0 0 14px rgba(245,158,11,.45); }
+  #grid a:hover { border-color:rgba(245,158,11,.5); }
+  /* Karten-Orte */
+  .poi-badge { display:block; filter:drop-shadow(0 3px 6px rgba(0,0,0,.5)); transition:transform .15s; }
+  .poi:hover .poi-badge { transform:scale(1.1); }
+  .poi-icon svg { filter:none !important; }
+  .poi:hover .poi-icon svg { transform:none !important; }
+
+  /* ===== Shop-Seite ===== */
+  #shop-page { background-color:#1c1b19; background-image: radial-gradient(70% 380px at 50% 0%, rgba(245,158,11,.20), transparent 70%), linear-gradient(to right, rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.025) 1px, transparent 1px); background-size:auto, 40px 40px, 40px 40px; background-repeat:no-repeat, repeat, repeat; }
+  .shop-hero { display:flex; align-items:center; gap:1.25rem; padding:1.5rem; margin-bottom:1.5rem; border-radius:1.25rem; border:1px solid rgba(245,158,11,.3); background:linear-gradient(135deg, rgba(245,158,11,.16), rgba(245,158,11,.03) 60%); box-shadow:0 14px 50px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.05); }
+  .shop-hero-tile { width:4.5rem; height:4.5rem; border-radius:1.1rem; display:flex; align-items:center; justify-content:center; flex:none; background:linear-gradient(145deg,#fcd34d,#f59e0b); color:#1c1b19; font-size:1.9rem; box-shadow:0 8px 24px rgba(245,158,11,.3), inset 0 1px 0 rgba(255,255,255,.5); }
+  .shop-count { display:inline-flex; align-items:center; gap:.4rem; padding:.3rem .75rem; border-radius:999px; font-size:.75rem; font-weight:700; color:#fde68a; background:rgba(245,158,11,.14); border:1px solid rgba(245,158,11,.35); }
+  .shop-search-wrap { position:relative; flex:1; }
+  .shop-search-wrap i { position:absolute; left:.9rem; top:50%; transform:translateY(-50%); color:#f59e0b; font-size:.85rem; pointer-events:none; }
+  #shop-search { width:100%; padding-left:2.4rem !important; background:rgba(0,0,0,.35) !important; border-color:rgba(245,158,11,.3) !important; }
+  .shop-card { position:relative; overflow:hidden; border-radius:1rem; border:1px solid rgba(245,158,11,.22); background:linear-gradient(160deg, rgba(245,158,11,.09), rgba(255,255,255,.02) 55%); padding:1rem; display:flex; flex-direction:column; gap:.85rem; transition:border-color .2s, transform .2s; box-shadow:0 8px 28px rgba(0,0,0,.3); }
+  .shop-card::before { content:""; position:absolute; left:0; right:0; top:0; height:3px; background:linear-gradient(90deg,#f59e0b,#fcd34d); }
+  a.shop-card:hover, .shop-card:hover { border-color:rgba(245,158,11,.55); }
+  .shop-card-head { display:flex; align-items:center; gap:.75rem; }
+  .shop-card-ico { width:2.6rem; height:2.6rem; border-radius:.8rem; flex:none; display:flex; align-items:center; justify-content:center; color:#fbbf24; font-size:1.05rem; background:rgba(245,158,11,.14); border:1px solid rgba(245,158,11,.35); }
+  .shop-sells { display:flex; gap:.6rem; padding:.7rem .8rem; border-radius:.75rem; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.06); font-size:.875rem; color:#e7dcc0; }
+  .shop-sells i { color:#f59e0b; margin-top:.2rem; }
+  .shop-empty { grid-column:1/-1; text-align:center; padding:3rem 1.5rem; border-radius:1.25rem; border:2px dashed rgba(245,158,11,.35); background:rgba(245,158,11,.05); color:#e7dcc0; }
+  .shop-empty i { font-size:2rem; color:#f59e0b; margin-bottom:.75rem; display:block; }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -50,6 +93,7 @@
     <nav class="flex items-center gap-3 text-sm font-semibold">
       <div id="main-nav" class="hidden lg:flex items-center gap-1 text-white/70">
         <span id="nav-pill"></span>
+        <a data-nav="home" href="#" class="nav-link">Home</a>
         <a data-nav="gebiete" href="#gebiete" class="nav-link">Gebiete</a>
         <a data-nav="kartenvorschau" href="#kartenvorschau" class="nav-link">Karte</a>
         <a data-nav="shop-teaser" href="#shop-teaser" class="nav-link">Shops</a>
@@ -57,7 +101,6 @@
         <a data-nav="live" href="#live" class="nav-link">Live</a>
         <a data-nav="abstimmung" href="#abstimmung" class="nav-link">Abstimmung</a>
       </div>
-      <a href="#app" class="px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-400 text-black transition">Zur Karte</a>
     </nav>
   </div>
 </header>
@@ -85,7 +128,7 @@
 <section id="gebiete" class="max-w-6xl mx-auto px-4 py-20">
   <div class="flex items-end justify-between mb-8">
     <div>
-      <h2 class="text-3xl md:text-4xl font-extrabold">Die Gebiete</h2>
+      <h2 class="text-3xl md:text-4xl font-extrabold sec-title"><span class="sec-ico"><i class="fa-solid fa-map-location-dot"></i></span>Die Gebiete</h2>
       <p class="text-white/60 mt-2">Jede Farbe steht für einen Spieler oder ein Team.</p>
     </div>
     <a href="#app" class="text-amber-400 hover:text-amber-300 font-semibold text-sm">Auf der Karte ansehen →</a>
@@ -94,7 +137,7 @@
 </section>
 
 <section id="kartenvorschau" class="max-w-6xl mx-auto px-4 pb-24">
-  <h2 class="text-3xl md:text-4xl font-extrabold">Die Karte</h2>
+  <h2 class="text-3xl md:text-4xl font-extrabold sec-title"><span class="sec-ico"><i class="fa-solid fa-compass"></i></span>Die Karte</h2>
   <p class="text-white/60 mt-2 mb-8">Zoomen, verschieben und alle Gebiete direkt auf der Weltkarte entdecken.</p>
   <a href="#app" class="group block relative rounded-2xl overflow-hidden border-2 border-amber-500/50 shadow-[0_0_60px_rgba(245,158,11,.15)]">
     <img id="preview" src="" alt="Weltkarte von CraftCore 4" class="w-full max-h-[560px] object-cover transition duration-500 group-hover:scale-105">
@@ -106,7 +149,7 @@
 <section id="shop-teaser" class="max-w-6xl mx-auto px-4 pb-24">
   <div class="flex flex-wrap items-end justify-between gap-3 mb-8">
     <div>
-      <h2 class="text-3xl md:text-4xl font-extrabold">Shopping District</h2>
+      <h2 class="text-3xl md:text-4xl font-extrabold sec-title"><span class="sec-ico"><i class="fa-solid fa-store"></i></span>Shopping District</h2>
       <p id="shop-teaser-info" class="text-white/60 mt-2"></p>
     </div>
     <a href="#shops" class="text-amber-400 hover:text-amber-300 font-semibold text-sm">Alle Shops ansehen →</a>
@@ -116,7 +159,7 @@
 
 <section id="bestenlisten" class="max-w-6xl mx-auto px-4 pb-24">
   <div class="mb-6">
-    <h2 class="text-3xl md:text-4xl font-extrabold">Bestenlisten</h2>
+    <h2 class="text-3xl md:text-4xl font-extrabold sec-title"><span class="sec-ico"><i class="fa-solid fa-ranking-star"></i></span>Bestenlisten</h2>
     <p id="lb-updated" class="text-white/60 mt-2"></p>
   </div>
   <div id="lb-tabs" class="flex flex-wrap gap-2 mb-6"></div>
@@ -124,15 +167,15 @@
 </section>
 
 <section id="live" class="max-w-6xl mx-auto px-4 pb-24">
-  <h2 class="text-3xl md:text-4xl font-extrabold">Live</h2>
+  <h2 class="text-3xl md:text-4xl font-extrabold sec-title"><span class="sec-ico"><i class="fa-solid fa-tower-broadcast"></i></span>Live</h2>
   <p class="text-white/60 mt-2">Wer ist gerade auf dem Server und wer streamt?</p>
   <div class="grid lg:grid-cols-5 gap-6 mt-8">
     <div class="lg:col-span-2 rounded-2xl border border-white/10 bg-white/5 p-5">
-      <div class="flex items-center justify-between"><h3 class="text-lg font-extrabold">Gerade online</h3><span id="live-count" class="text-sm text-white/60"></span></div>
+      <div class="flex items-center justify-between"><h3 class="text-lg font-extrabold"><span class="card-ico"><i class="fa-solid fa-user-group"></i></span>Gerade online</h3><span id="live-count" class="text-sm text-white/60"></span></div>
       <div id="live-online" class="mt-4 flex flex-col gap-2"></div>
     </div>
     <div class="lg:col-span-3 rounded-2xl border border-white/10 bg-white/5 p-5">
-      <div class="flex items-center justify-between"><h3 class="text-lg font-extrabold">Auf Twitch live</h3><span id="live-viewers" class="text-sm text-white/60"></span></div>
+      <div class="flex items-center justify-between"><h3 class="text-lg font-extrabold"><span class="card-ico"><i class="fa-brands fa-twitch"></i></span>Auf Twitch live</h3><span id="live-viewers" class="text-sm text-white/60"></span></div>
       <div id="live-streams" class="mt-4 grid sm:grid-cols-2 gap-4"></div>
     </div>
   </div>
@@ -141,7 +184,7 @@
 <section id="abstimmung" class="max-w-6xl mx-auto px-4 pb-24">
   <div class="flex flex-wrap items-end justify-between gap-3 mb-8">
     <div>
-      <h2 class="text-3xl md:text-4xl font-extrabold">Abstimmung der Woche</h2>
+      <h2 class="text-3xl md:text-4xl font-extrabold sec-title"><span class="sec-ico"><i class="fa-solid fa-trophy"></i></span>Abstimmung der Woche</h2>
       <p class="text-white/60 mt-2">Wer hat diese Woche am besten gebaut? Jeder hat eine Stimme.</p>
     </div>
     <button id="vote-new" class="admin-only px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-400 text-black text-sm font-bold transition">+ Neue Abstimmung</button>
@@ -364,18 +407,19 @@
     </div>
   </header>
   <main class="max-w-6xl w-full mx-auto px-4 py-10">
-    <div class="flex items-center gap-4 mb-4">
-      <div id="shop-icon"></div>
+    <div class="shop-hero">
+      <div class="shop-hero-tile"><i class="fa-solid fa-store"></i></div>
       <div class="min-w-0 flex-1">
-        <div class="text-[10px] uppercase tracking-widest text-stone-400">Ort auf der Karte</div>
-        <h1 id="shop-title" class="viewer-only text-3xl font-extrabold text-white"></h1>
-        <input id="shop-title-edit" class="admin-only w-full bg-stone-950 border border-stone-700 rounded px-2 py-1.5 text-xl font-bold text-white focus:outline-none focus:border-amber-500">
+        <span id="shop-count" class="shop-count"><i class="fa-solid fa-bag-shopping"></i><span></span></span>
+        <h1 id="shop-title" class="viewer-only text-3xl md:text-4xl font-extrabold text-white mt-2"></h1>
+        <input id="shop-title-edit" class="admin-only w-full mt-2 bg-stone-950 border border-stone-700 rounded px-2 py-1.5 text-xl font-bold text-white focus:outline-none focus:border-amber-500">
+        <p id="shop-info" class="viewer-only text-white/70 whitespace-pre-line mt-1"></p>
+        <textarea id="shop-info-edit" rows="2" placeholder="Beschreibung des Shopping Districts" class="admin-only w-full mt-2 bg-stone-950 border border-stone-700 rounded px-2 py-1.5 text-sm text-stone-200 focus:outline-none focus:border-amber-500"></textarea>
       </div>
+      <div id="shop-icon" class="hidden"></div>
     </div>
-    <p id="shop-info" class="viewer-only text-stone-300 whitespace-pre-line mb-6"></p>
-    <textarea id="shop-info-edit" rows="2" placeholder="Beschreibung des Shopping Districts" class="admin-only w-full bg-stone-950 border border-stone-700 rounded px-2 py-1.5 text-sm text-stone-200 focus:outline-none focus:border-amber-500 mb-6"></textarea>
     <div class="flex gap-2 mb-6">
-      <input id="shop-search" placeholder="Shop oder Ware suchen…" autocomplete="off" class="flex-1 bg-stone-950 border border-stone-700 rounded-lg px-3 py-2 text-sm text-stone-200 focus:outline-none focus:border-amber-500">
+      <div class="shop-search-wrap"><i class="fa-solid fa-magnifying-glass"></i><input id="shop-search" placeholder="Shop oder Ware suchen…" autocomplete="off" class="bg-stone-950 border border-stone-700 rounded-lg px-3 py-2.5 text-sm text-stone-200 focus:outline-none focus:border-amber-500"></div>
       <button id="shop-add" class="admin-only px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-sm font-bold">+ Shop hinzufügen</button>
     </div>
     <div id="shop-list" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
@@ -1225,18 +1269,23 @@ function bindFields(root, obj, afterChange) {
 
 // ================= Orte auf der Karte (Spawn, Shopping District, ...) =================
 const POI_ICONS = {
-  spawn: { pal: { K: '#000', R: '#f59e0b', W: '#f3e2c0', D: '#7c4a1d' }, rows: ['.....KK.....', '....KRRK....', '...KRRRRK...', '..KRRRRRRK..', '.KRRRRRRRRK.', 'KKKKKKKKKKKK', '.KWWWWWWWWK.', '.KWWWDDWWWK.', '.KWWWDDWWWK.', '.KWWWDDWWWK.', '.KKKKKKKKKK.'] },
-  shopping: { pal: { K: '#000', G: '#17dd62', H: '#9bf8b9', D: '#0b8a3b' }, rows: ['...KKKKKK...', '..KHHGGGGK..', '.KHHGGGGGDK.', 'KHHGGGGGGDDK', 'KHGGGGGGGDDK', 'KGGGGGGGGDDK', '.KGGGGGGDDK.', '..KGGGGDDK..', '...KGGDDK...', '....KGDK....', '.....KK.....'] },
+  spawn: { art: '<path d="M6.5 20C6 27 11 30 15 32C18 34 19 38 22 40C23.5 41.5 25 41.5 26.5 40C29 38 30 34 33 32C37 30 42 27 41.5 20" fill="none" stroke="#1c1b19" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="24" cy="19" rx="18" ry="6.5" fill="none" stroke="#1c1b19" stroke-width="2.8"/>' },
+  shopping: { art: '<path d="M10 17H38L40 42Q40 44 38 44H10Q8 44 8 42Z" fill="none" stroke="#1c1b19" stroke-width="3.4" stroke-linejoin="round"/><path d="M17 22V15Q17 7 24 7Q31 7 31 15V22" fill="none" stroke="#1c1b19" stroke-width="3" stroke-linecap="round"/>' },
   portal: { pal: { K: '#000', D: '#2a1a4a', P: '#a855f7', L: '#d8b4fe' }, rows: ['.KKKKKK.', 'KDDDDDDK', 'KDPLPPDK', 'KDPPPLDK', 'KDLPPPDK', 'KDPPLPDK', 'KDPPPPDK', 'KDDDDDDK', '.KKKKKK.'] },
   other: { pal: { K: '#000', Y: '#fbbf24', W: '#fff3b0', G: '#d97706' }, rows: ['KKKKKKKK', 'KYYYYYYK', 'KYWWWYYK', 'KYWYYYYK', 'KYYYYYGK', 'KYYYYGGK', 'KGGGGGGK', 'KKKKKKKK'] }
 };
 const POI_TYPES = { spawn: 'Spawn', shopping: 'Shopping District', portal: 'Portal', other: 'Sonstiges' };
+let tileId = 0;
 function pixelSvg(type, px) {
   const ic = POI_ICONS[type] || POI_ICONS.other;
+  if (ic.art) {
+    const id = 'poit' + (tileId++), z = 8 * px;
+    return '<svg class="poi-badge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="' + z + '" height="' + z + '"><defs><linearGradient id="' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fcd34d"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs><rect x="2" y="2" width="44" height="44" rx="12" fill="url(#' + id + ')"/><g transform="translate(24 24.5) scale(.62) translate(-24 -24)">' + ic.art + '</g></svg>';
+  }
   const w = ic.rows[0].length, h = ic.rows.length;
   let r = '';
   ic.rows.forEach((row, y) => [...row].forEach((ch, x) => { if (ch !== '.') r += '<rect x="' + x + '" y="' + y + '" width="1" height="1" fill="' + ic.pal[ch] + '"/>'; }));
-  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '" width="' + (w * px) + '" height="' + (h * px) + '" shape-rendering="crispEdges">' + r + '</svg>';
+  return '<svg class="poi-badge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '" width="' + (w * px) + '" height="' + (h * px) + '" shape-rendering="crispEdges">' + r + '</svg>';
 }
 let poiDrag = null;
 function renderPois() {
@@ -1352,14 +1401,20 @@ function renderShopModal() {
 $('shop-title-edit').addEventListener('input', e => { const p = site.pois.find(q => q.id === 'shopping'); p.name = e.target.value; $('shop-title').textContent = p.name; renderPois(); renderShopTeaser(); });
 $('shop-info-edit').addEventListener('input', e => { const p = site.pois.find(q => q.id === 'shopping'); p.info = e.target.value; $('shop-info').textContent = p.info; renderShopTeaser(); });
 $('shop-search').addEventListener('input', () => renderShopList());
+function shopHead(s) {
+  const h = el('div', 'shop-card-head');
+  h.innerHTML = '<div class="shop-card-ico"><i class="fa-solid fa-store"></i></div><div class="min-w-0 flex flex-col gap-1"><div class="font-extrabold text-white text-lg leading-tight"></div><div class="owners flex flex-wrap gap-1"></div></div>';
+  h.querySelector('.font-extrabold').textContent = s.name || 'Shop';
+  const ow = h.querySelector('.owners'); splitNames(s.owner).forEach(n => ow.appendChild(nameChip(n)));
+  return h;
+}
 function shopCardView(s) {
-  const card = el('a', 'rounded-xl border border-stone-700 bg-stone-800/60 p-3 flex flex-col gap-3 hover:border-amber-500/60 transition');
+  const card = el('a', 'shop-card');
   card.href = '#shops';
   const imgs = s.images || [];
+  card.appendChild(shopHead(s));
   if (imgs.length) { const m = el('img', 'w-full h-36 object-cover rounded-lg'); m.src = imgs[0]; m.loading = 'lazy'; card.appendChild(m); }
-  const t = el('div', 'font-extrabold text-white text-lg'); t.textContent = s.name || 'Shop'; card.appendChild(t);
-  splitNames(s.owner).forEach(n => card.appendChild(nameChip(n)));
-  if (s.sells) { const d = el('p', 'text-sm text-stone-300 whitespace-pre-line line-clamp-3'); d.textContent = s.sells; card.appendChild(d); }
+  if (s.sells) { const d = el('div', 'shop-sells'); d.innerHTML = '<i class="fa-solid fa-tag"></i><span class="line-clamp-3 whitespace-pre-line"></span>'; d.querySelector('span').textContent = s.sells; card.appendChild(d); }
   return card;
 }
 function renderShopTeaser() {
@@ -1378,15 +1433,19 @@ $('shop-add').addEventListener('click', () => {
 function renderShopList() {
   const box = $('shop-list'); box.innerHTML = '';
   const q = ($('shop-search').value || '').trim().toLowerCase();
+  const cnt = $('shop-count'); if (cnt) { const n = (site.shops || []).length; cnt.querySelector('span').textContent = n + (n === 1 ? ' Shop' : ' Shops'); }
   const shops = (site.shops || []).filter(s => !q || (s.name + ' ' + s.owner + ' ' + s.sells).toLowerCase().includes(q));
   if (!shops.length) {
-    box.appendChild(el('p', 'text-stone-500 text-sm sm:col-span-2 lg:col-span-3', q ? 'Kein Shop gefunden.' : (isAdmin ? 'Noch keine Shops. Füge den ersten mit „+ Shop hinzufügen“ hinzu.' : 'Hier gibt es noch keine Shops.')));
+    const e = el('div', 'shop-empty', '<i class="fa-solid ' + (q ? 'fa-magnifying-glass' : 'fa-store') + '"></i><div class="font-bold text-white text-lg"></div><div class="text-sm mt-1 opacity-80"></div>');
+    e.children[1].textContent = q ? 'Kein Shop gefunden' : 'Noch keine Shops';
+    e.children[2].textContent = q ? 'Versuch einen anderen Namen oder eine andere Ware.' : (isAdmin ? 'Füge den ersten mit „+ Shop hinzufügen“ hinzu.' : 'Bald gibt es hier die ersten Shops.');
+    box.appendChild(e);
     return;
   }
   shops.forEach(s => box.appendChild(shopCard(s)));
 }
 function shopCard(s) {
-  const card = el('div', 'rounded-xl border border-stone-700 bg-stone-800/60 p-3 flex flex-col gap-3');
+  const card = el('div', 'shop-card');
   s.images = s.images || [];
   if (isAdmin) {
     card.innerHTML = '<input data-f="name" class="' + INP + '" placeholder="Shop-Name" value="' + esc(s.name) + '">' +
@@ -1407,10 +1466,8 @@ function shopCard(s) {
       card.appendChild(main);
       if (s.images.length > 1) card.appendChild(gallery(s.images.slice(1), 'grid-cols-4', 'h-12'));
     }
-    const t = el('div', 'font-extrabold text-white text-lg'); t.textContent = s.name || 'Shop';
-    card.appendChild(t);
-    splitNames(s.owner).forEach(n => card.appendChild(nameChip(n)));
-    if (s.sells) { const d = el('p', 'text-sm text-stone-300 whitespace-pre-line'); d.textContent = s.sells; card.appendChild(d); }
+    card.insertBefore(shopHead(s), card.firstChild);
+    if (s.sells) { const d = el('div', 'shop-sells'); d.innerHTML = '<i class="fa-solid fa-tag"></i><span class="whitespace-pre-line"></span>'; d.querySelector('span').textContent = s.sells; card.appendChild(d); }
   }
   return card;
 }
@@ -1782,13 +1839,14 @@ loadStats();
 setInterval(loadStats, 60000);
 
 // ---- Navigation: Markierung gleitet beim Scrollen von Abschnitt zu Abschnitt
-const NAV_SECTIONS = ['gebiete', 'kartenvorschau', 'shop-teaser', 'bestenlisten', 'live', 'abstimmung'];
+const NAV_SECTIONS = ['home', 'gebiete', 'kartenvorschau', 'shop-teaser', 'bestenlisten', 'live', 'abstimmung'];
 function updateNavPill() {
   const nav = $('main-nav'), pill = $('nav-pill');
   if (!nav || !pill || nav.offsetParent === null) return;
   const links = NAV_SECTIONS.map(id => nav.querySelector('[data-nav="' + id + '"]'));
   const tops = NAV_SECTIONS.map(id => { const e = $(id); return e ? e.getBoundingClientRect().top + window.scrollY : 0; });
-  const y = window.scrollY + 160;
+  const y = window.scrollY;
+  tops.forEach((t, k) => { tops[k] = k === 0 ? 0 : Math.max(1, t - 160); });
   let i = -1; tops.forEach((t, k) => { if (y >= t) i = k; });
   if (i < 0) { pill.style.opacity = '0'; links.forEach(l => l.classList.remove('active')); return; }
   const j = Math.min(i + 1, links.length - 1);
@@ -1802,6 +1860,7 @@ function updateNavPill() {
 let navTick = false;
 window.addEventListener('scroll', () => { if (!navTick) { navTick = true; requestAnimationFrame(() => { navTick = false; updateNavPill(); }); } }, { passive: true });
 window.addEventListener('resize', updateNavPill);
+(function(){ const h = document.querySelector('[data-nav="home"]'); if (h) h.addEventListener('click', e => { e.preventDefault(); if (location.hash) history.replaceState(null, '', location.pathname + location.search); window.scrollTo({ top: 0, behavior: 'smooth' }); requestAnimationFrame(updateNavPill); }); })();
 window.addEventListener('load', updateNavPill);
 
 // Namen-Größe
