@@ -81,6 +81,11 @@
   .shop-sells i { color:#f59e0b; margin-top:.2rem; }
   .shop-empty { grid-column:1/-1; text-align:center; padding:3rem 1.5rem; border-radius:1.25rem; border:2px dashed rgba(245,158,11,.35); background:rgba(245,158,11,.05); color:#e7dcc0; }
   .shop-empty i { font-size:2rem; color:#f59e0b; margin-bottom:.75rem; display:block; }
+
+  .sell-wrap { display:flex; flex-wrap:wrap; gap:.45rem; align-items:center; min-width:0; }
+  .sell-ico { width:2.7rem; height:2.7rem; border-radius:.7rem; display:flex; align-items:center; justify-content:center; background:rgba(245,158,11,.1); border:1px solid rgba(245,158,11,.3); }
+  .sell-ico img { width:1.9rem; height:1.9rem; image-rendering:pixelated; }
+  .sell-txt { padding:.2rem .65rem; border-radius:999px; font-size:.8rem; color:#fde68a; background:rgba(245,158,11,.14); border:1px solid rgba(245,158,11,.3); }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -1443,6 +1448,174 @@ function renderShopModal() {
 $('shop-title-edit').addEventListener('input', e => { const p = site.pois.find(q => q.id === 'shopping'); p.name = e.target.value; $('shop-title').textContent = p.name; renderPois(); renderShopTeaser(); });
 $('shop-info-edit').addEventListener('input', e => { const p = site.pois.find(q => q.id === 'shopping'); p.info = e.target.value; $('shop-info').textContent = p.info; renderShopTeaser(); });
 $('shop-search').addEventListener('input', () => renderShopList());
+
+// ---- Verkauft-Text -> Minecraft-Item-Bilder
+const MC_DICT = `
+cooked_beef:steak|beef|rindfleisch|gebratenessteak|cookedbeef
+beef:rohessteak|rawbeef|rohesrindfleisch
+cooked_porkchop:pork|porkchop|schweinefleisch|schwein|kotelett|schnitzel|cookedpork
+porkchop:rawpork|rohesschweinefleisch
+cooked_chicken:chicken|hühnchen|huhn|hähnchen|hendl|cookedchicken
+chicken:rawchicken|rohhuhn
+cooked_mutton:mutton|hammel|hammelfleisch|lamm
+cooked_rabbit:rabbit|kaninchen|hase
+cooked_salmon:salmon|lachs
+cooked_cod:cod|kabeljau|fisch|fish
+salmon:rawsalmon|rohlachs
+cod:rawcod
+bread:bread|brot|brötchen
+apple:apple|apfel|äpfel
+golden_apple:goldenapple|goldenerapfel|gapple|goldapfel
+enchanted_golden_apple:notchapple|verzauberterapfel|enchantedgoldenapple
+carrot:carrot|karotte|möhre|karotten
+golden_carrot:goldenecarrot|goldenekarotte|goldenercarrot
+potato:potato|kartoffel|pommes
+baked_potato:bakedpotato|ofenkartoffel|backkartoffel
+beetroot:rübe|rotebete
+cookie:cookie|keks|kekse
+cake:cake|kuchen|torte
+pumpkin_pie:pumpkinpie|kürbiskuchen
+melon_slice:melon|wassermelone|melonenscheibe
+sweet_berries:berries|beeren|süßebeeren
+honey_bottle:honey|honig
+milk_bucket:milk|milch
+mushroom_stew:mushroomstew|pilzsuppe|suppe|soup|eintopf
+rabbit_stew:rabbitstew
+dried_kelp:driedkelp|seetang
+egg:egg|ei|eier
+sugar:sugar|zucker
+wheat:wheat|weizen
+potion:potion|potions|trank|tränke|tränken|zaubertrank
+splash_potion:splashpotion|wurftrank
+lingering_potion:lingeringpotion|verweiltrank
+experience_bottle:xp|exp|expbottle|erfahrungsflasche|xpflasche|bottleofenchanting
+glass_bottle:bottle|flasche|glasflasche
+diamond:diamond|diamant|diamanten
+emerald:emerald|smaragd|smaragde
+iron_ingot:iron|eisen|eisenbarren
+gold_ingot:gold|goldbarren
+netherite_ingot:netherite|netheritebarren
+copper_ingot:copper|kupfer
+coal:coal|kohle
+charcoal:holzkohle
+redstone:redstone|redstonestaub
+lapis_lazuli:lapis|lapislazuli
+quartz:quartz|quarz|netherquarz
+amethyst_shard:amethyst
+stick:stick|stock|stöcke
+string:string|faden
+feather:feather|feder|federn
+leather:leather|leder
+bone:bone|knochen
+slime_ball:slimeball|schleimball|schleim
+gunpowder:gunpowder|schießpulver|schiesspulver
+blaze_rod:blazerod|lohenrute
+ender_pearl:enderpearl|enderperle|enderperlen
+ender_eye:eyeofender|enderauge
+ghast_tear:ghasttear|ghasttränen
+glowstone_dust:glowstonedust|glowstonestaub
+paper:paper|papier
+book:book|buch|bücher
+enchanted_book:enchantedbook|verzaubertesbuch|verzauberungen|enchants
+name_tag:nametag|namensschild
+saddle:saddle|sattel
+lead:lead|leine
+diamond_sword:sword|schwert|schwerter|diamantschwert|diamondsword
+netherite_sword:netheriteschwert|netheritesword
+iron_sword:eisenschwert|ironsword
+diamond_pickaxe:pickaxe|spitzhacke|spitzhacken|pickel|hacke
+diamond_axe:axe|axt|äxte
+diamond_shovel:shovel|schaufel
+diamond_hoe:hoe|harke
+bow:bow|bogen
+crossbow:armbrust
+arrow:arrow|arrows|pfeil|pfeile
+shield:shield|schild
+trident:trident|dreizack
+fishing_rod:fishingrod|angel
+elytra:elytra|flügel
+totem_of_undying:totem|totemofundying
+diamond_helmet:helmet|helm
+diamond_chestplate:chestplate|brustplatte|rüstung|armor|armour
+diamond_leggings:leggings|beinschutz|hose
+diamond_boots:boots|stiefel|schuhe
+firework_rocket:firework|fireworks|rakete|feuerwerk
+flint_and_steel:feuerzeug|flintandsteel
+shears:shears|schere
+bucket:bucket|eimer
+water_bucket:waterbucket|wassereimer
+lava_bucket:lavabucket|lavaeimer
+compass:compass|kompass
+clock:clock|uhr
+filled_map:map|karte|karten
+spyglass:fernrohr|spyglass
+lantern:lantern|laterne
+torch:torch|fackel|fackeln
+minecart:minecart|lore
+oak_boat:boat|boot
+painting:painting|gemälde|bild
+item_frame:itemframe|rahmen
+oak_sign:sign|schilder
+sugar_cane:sugarcane|zuckerrohr
+b/cobblestone:cobblestone|cobble|bruchstein
+b/stone:stone|stein
+b/dirt:dirt|erde
+b/oak_planks:planks|bretter|holz
+b/oak_log:log|logs|baumstamm|stämme
+b/glass:glass|glas
+b/sand:sand
+b/gravel:gravel|kies
+b/obsidian:obsidian
+b/netherrack:netherrack
+b/glowstone:glowstone
+b/bookshelf:bookshelf|bücherregal
+b/tnt_side:tnt
+b/iron_block:ironblock|eisenblock
+b/gold_block:goldblock
+b/diamond_block:diamondblock|diamantblock
+b/emerald_block:emeraldblock|smaragdblock
+b/redstone_block:redstoneblock
+b/lapis_block:lapisblock
+b/coal_block:coalblock|kohleblock
+b/hay_block_side:hay|heu|heuballen
+b/slime_block:slimeblock|schleimblock
+b/pumpkin_side:pumpkin|kürbis
+b/melon_side:melonenblock
+b/cactus_side:cactus|kaktus
+b/white_wool:wool|wolle
+`;
+const MC_STOP = new Set(['aller','alle','allerart','art','arten','von','der','die','das','und','and','shop','laden','verschiedene','diverse','etc','usw','mehr','viel','vieles','sachen','zeug']);
+const MC_MAP = {};
+MC_DICT.trim().split('\n').forEach(l => { const [id, al] = l.split(':'); const kind = id.startsWith('b/') ? 'b' : 'i', n = id.replace(/^b\//, ''); [n.replace(/_/g, ''), ...al.split('|')].forEach(a => { if (!(a in MC_MAP)) MC_MAP[a] = [kind, n]; }); });
+const MC_BASES = ['https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.20.2/', 'https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/', 'https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.19/'];
+function mcLookup(w) {
+  const k = w.toLowerCase().replace(/[\s_\-.'’"!]/g, '');
+  if (!k) return null;
+  if (MC_MAP[k]) return MC_MAP[k];
+  for (const suf of ['s', 'n', 'en', 'e', 'er']) if (k.endsWith(suf) && MC_MAP[k.slice(0, -suf.length)]) return MC_MAP[k.slice(0, -suf.length)];
+  return null;
+}
+function mcIcon(item, label) {
+  const box = el('span', 'sell-ico'); box.title = label;
+  const img = document.createElement('img'); img.alt = label; img.loading = 'lazy';
+  let n = 0;
+  const src = () => MC_BASES[n] + (item[0] === 'b' ? 'blocks/' : 'items/') + item[1] + '.png';
+  img.onerror = () => { n++; if (n < MC_BASES.length) img.src = src(); else { box.className = 'sell-txt'; box.textContent = label; img.remove(); } };
+  img.src = src(); box.appendChild(img);
+  return box;
+}
+function sellsNode(text) {
+  const wrap = el('span', 'sell-wrap');
+  String(text || '').split(/[,;\n+&\/|•]+|\s+(?:und|and)\s+/i).map(t => t.trim()).filter(Boolean).forEach(tok => {
+    const whole = mcLookup(tok);
+    if (whole) { wrap.appendChild(mcIcon(whole, tok)); return; }
+    const words = tok.split(/\s+/), found = words.map(w => mcLookup(w));
+    if (words.length > 1 && found.some(Boolean)) {
+      words.forEach((w, i) => { if (found[i]) wrap.appendChild(mcIcon(found[i], w)); else if (!MC_STOP.has(w.toLowerCase())) wrap.appendChild(el('span', 'sell-txt', esc(w))); });
+    } else wrap.appendChild(el('span', 'sell-txt', esc(tok)));
+  });
+  return wrap;
+}
 function shopHead(s) {
   const h = el('div', 'shop-card-head');
   h.innerHTML = '<div class="shop-card-ico"><i class="fa-solid fa-store"></i></div><div class="min-w-0 flex flex-col gap-1"><div class="font-extrabold text-white text-lg leading-tight"></div><div class="owners flex flex-wrap gap-1"></div></div>';
@@ -1456,7 +1629,7 @@ function shopCardView(s) {
   const imgs = s.images || [];
   card.appendChild(shopHead(s));
   if (imgs.length) { const m = el('img', 'w-full h-36 object-cover rounded-lg'); m.src = imgs[0]; m.loading = 'lazy'; card.appendChild(m); }
-  if (s.sells) { const d = el('div', 'shop-sells'); d.innerHTML = '<i class="fa-solid fa-tag"></i><span class="line-clamp-3 whitespace-pre-line"></span>'; d.querySelector('span').textContent = s.sells; card.appendChild(d); }
+  if (s.sells) { const d = el('div', 'shop-sells'); d.innerHTML = '<i class="fa-solid fa-tag"></i>'; d.appendChild(sellsNode(s.sells)); card.appendChild(d); }
   return card;
 }
 function renderShopTeaser() {
@@ -1492,7 +1665,7 @@ function shopCard(s) {
   if (isAdmin) {
     card.innerHTML = '<input data-f="name" class="' + INP + '" placeholder="Shop-Name" value="' + esc(s.name) + '">' +
       '<input data-f="owner" class="' + INP + '" placeholder="Besitzer (Ingame-Name, mehrere mit Komma)" value="' + esc(s.owner) + '">' +
-      '<textarea data-f="sells" rows="2" class="' + INP + '" placeholder="Was wird hier verkauft?">' + esc(s.sells) + '</textarea>';
+      '<textarea data-f="sells" rows="2" class="' + INP + '" placeholder="Was wird hier verkauft? Mit Komma trennen, z. B. Steak, Brot, Diamant (wird als Bild angezeigt)">' + esc(s.sells) + '</textarea>';
     bindFields(card, s);
     card.appendChild(imageEditor(s.images));
     const del = mkBtn('Shop löschen', 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-600/20 hover:bg-red-600/30 text-red-300 border border-red-500/30');
@@ -1509,7 +1682,7 @@ function shopCard(s) {
       if (s.images.length > 1) card.appendChild(gallery(s.images.slice(1), 'grid-cols-4', 'h-12'));
     }
     card.insertBefore(shopHead(s), card.firstChild);
-    if (s.sells) { const d = el('div', 'shop-sells'); d.innerHTML = '<i class="fa-solid fa-tag"></i><span class="whitespace-pre-line"></span>'; d.querySelector('span').textContent = s.sells; card.appendChild(d); }
+    if (s.sells) { const d = el('div', 'shop-sells'); d.innerHTML = '<i class="fa-solid fa-tag"></i>'; d.appendChild(sellsNode(s.sells)); card.appendChild(d); }
   }
   return card;
 }
@@ -1882,6 +2055,7 @@ setInterval(loadStats, 60000);
 
 // ---- Navigation: Markierung gleitet beim Scrollen von Abschnitt zu Abschnitt
 const NAV_SECTIONS = ['home', 'gebiete', 'kartenvorschau', 'shop-teaser', 'bestenlisten', 'live', 'abstimmung'];
+let navForced = null;
 function updateNavPill() {
   const nav = $('main-nav'), pill = $('nav-pill');
   if (!nav || !pill || nav.offsetParent === null) return;
@@ -1889,10 +2063,14 @@ function updateNavPill() {
   const tops = NAV_SECTIONS.map(id => { const e = $(id); return e ? e.getBoundingClientRect().top + window.scrollY : 0; });
   const y = window.scrollY;
   tops.forEach((t, k) => { tops[k] = k === 0 ? 0 : Math.max(1, t - 160); });
+  const maxY = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  let lim = maxY;
+  for (let k = tops.length - 1; k > 0; k--) { if (tops[k] > lim) tops[k] = lim; lim = tops[k] - 80; }
   let i = -1; tops.forEach((t, k) => { if (y >= t) i = k; });
+  if (navForced !== null) { i = navForced; tops[i] = y; }
   if (i < 0) { pill.style.opacity = '0'; links.forEach(l => l.classList.remove('active')); return; }
-  const j = Math.min(i + 1, links.length - 1);
-  const f = i < tops.length - 1 ? Math.min(1, Math.max(0, (y - tops[i]) / (tops[i + 1] - tops[i]))) : 0;
+  const j = navForced !== null ? i : Math.min(i + 1, links.length - 1);
+  const f = navForced !== null ? 0 : i < tops.length - 1 ? Math.min(1, Math.max(0, (y - tops[i]) / ((tops[i + 1] - tops[i]) || 1))) : 0;
   const nr = nav.getBoundingClientRect(), a = links[i].getBoundingClientRect(), b = links[j].getBoundingClientRect();
   pill.style.opacity = '1';
   pill.style.width = (a.width * (1 - f) + b.width * f) + 'px';
@@ -1902,6 +2080,11 @@ function updateNavPill() {
 let navTick = false;
 window.addEventListener('scroll', () => { if (!navTick) { navTick = true; requestAnimationFrame(() => { navTick = false; updateNavPill(); }); } }, { passive: true });
 window.addEventListener('resize', updateNavPill);
+(function(){
+  const nav = $('main-nav'); if (!nav) return;
+  nav.querySelectorAll('[data-nav]').forEach(a => a.addEventListener('click', () => { navForced = NAV_SECTIONS.indexOf(a.dataset.nav); updateNavPill(); }));
+  ['wheel', 'touchmove', 'keydown'].forEach(ev => window.addEventListener(ev, () => { if (navForced !== null) { navForced = null; updateNavPill(); } }, { passive: true }));
+})();
 (function(){ const h = document.querySelector('[data-nav="home"]'); if (h) h.addEventListener('click', e => { e.preventDefault(); if (location.hash) history.replaceState(null, '', location.pathname + location.search); window.scrollTo({ top: 0, behavior: 'smooth' }); requestAnimationFrame(updateNavPill); }); })();
 window.addEventListener('load', updateNavPill);
 
