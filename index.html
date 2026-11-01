@@ -309,6 +309,8 @@
                         <span>Punkte-Modus</span>
                         <input type="checkbox" id="setting-edit-nodes" class="rounded bg-stone-900 border-stone-700 text-amber-600 focus:ring-0">
                     </label>
+                    <button id="btn-double-points" class="admin-only px-2 py-1.5 text-[11px] font-semibold rounded bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700"><i class="fa-solid fa-circle-nodes mr-1 text-amber-500"></i>Punkte verdoppeln (4 → 8)</button>
+                    <p class="admin-only text-[10px] text-stone-500 leading-snug">Im Punkte-Modus: gelben Punkt auf einer Kante ziehen = neuen Punkt hinzufügen. Doppelklick auf einen roten Punkt = löschen.</p>
                 </div>
 
                 <div class="flex flex-col gap-3">
@@ -708,7 +710,26 @@
                                 state.transformAction = 'move-node';
                                 state.draggedNodeIndex = idx;
                             });
+                            node.addEventListener('dblclick', (e) => {
+                                e.stopPropagation();
+                                if (claim.points.length > 3) { claim.points.splice(idx, 1); state.transformAction = null; state.draggedNodeIndex = null; render(); }
+                            });
                             svgHandles.appendChild(node);
+                        });
+                        claim.points.forEach((pt, idx) => {
+                            const nx = claim.points[(idx + 1) % claim.points.length];
+                            const mid = svgEl('circle', {
+                                cx: (pt[0] + nx[0]) / 2, cy: (pt[1] + nx[1]) / 2, r: 4.5, fill: '#f59e0b',
+                                stroke: '#ffffff', 'stroke-width': 1.5, 'fill-opacity': 0.85, class: 'cursor-move'
+                            });
+                            mid.addEventListener('mousedown', (e) => {
+                                e.stopPropagation();
+                                claim.points.splice(idx + 1, 0, [Math.round((pt[0] + nx[0]) / 2), Math.round((pt[1] + nx[1]) / 2)]);
+                                state.transformAction = 'move-node';
+                                state.draggedNodeIndex = idx + 1;
+                                render();
+                            });
+                            svgHandles.appendChild(mid);
                         });
                     } else {
                         svgHandles.appendChild(svgEl('rect', {
@@ -928,6 +949,19 @@
             });
             document.getElementById('setting-edit-nodes').addEventListener('change', (e) => {
                 state.style.editNodes = e.target.checked;
+                render();
+            });
+            document.getElementById('btn-double-points').addEventListener('click', () => {
+                const claim = state.claims.find(c => c.id === state.activeTransformId);
+                if (!claim) { alert('Bitte zuerst eine Zone auswählen.'); return; }
+                const out = [];
+                claim.points.forEach((pt, i) => {
+                    const nx = claim.points[(i + 1) % claim.points.length];
+                    out.push(pt, [Math.round((pt[0] + nx[0]) / 2), Math.round((pt[1] + nx[1]) / 2)]);
+                });
+                claim.points = out;
+                state.style.editNodes = true;
+                const cb = document.getElementById('setting-edit-nodes'); if (cb) cb.checked = true;
                 render();
             });
             document.getElementById('input-stroke-width').addEventListener('input', (e) => {
