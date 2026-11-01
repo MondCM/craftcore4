@@ -32,6 +32,12 @@
   .poi:hover .poi-icon svg { transform: scale(1.18); }
   .poi-label { position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:3px; font:700 10px/1 ui-monospace,monospace; letter-spacing:.08em; text-transform:uppercase; color:#fff; white-space:nowrap; text-shadow:1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000,-1px -1px 0 #000; }
   #map-wrapper { transition: none !important; }
+  section[id] { scroll-margin-top: 80px; }
+  #nav-pill { position:absolute; top:0; bottom:0; left:0; width:0; border-radius:999px; background:rgba(245,158,11,.16); border:1px solid rgba(245,158,11,.5); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 6px 18px rgba(0,0,0,.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity:0; pointer-events:none; transition: opacity .3s ease, transform .18s cubic-bezier(.22,1,.36,1), width .18s cubic-bezier(.22,1,.36,1); }
+  #main-nav { position:relative; }
+  .nav-link { position:relative; z-index:1; padding:8px 14px; border-radius:999px; transition: color .25s; }
+  .nav-link:hover { color:#fff; }
+  .nav-link.active { color:#fbbf24; }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -41,10 +47,16 @@
 <header class="sticky top-0 z-30 backdrop-blur bg-[#1c1b19]/80 border-b border-white/10">
   <div class="flex items-center justify-between px-4 md:px-8 h-16">
     <a href="index.html" class="flex items-center"><img id="logo-small" alt="CraftCore 4" class="h-11 w-auto"></a>
-    <nav class="flex items-center gap-6 text-sm font-semibold text-white/70">
-      <a href="#gebiete" class="hover:text-white">Gebiete</a>
-      <a href="#kartenvorschau" class="hover:text-white">Karte</a>
-      <a href="#abstimmung" class="hover:text-white">Abstimmung</a>
+    <nav class="flex items-center gap-3 text-sm font-semibold">
+      <div id="main-nav" class="hidden lg:flex items-center gap-1 text-white/70">
+        <span id="nav-pill"></span>
+        <a data-nav="gebiete" href="#gebiete" class="nav-link">Gebiete</a>
+        <a data-nav="kartenvorschau" href="#kartenvorschau" class="nav-link">Karte</a>
+        <a data-nav="shop-teaser" href="#shop-teaser" class="nav-link">Shops</a>
+        <a data-nav="bestenlisten" href="#bestenlisten" class="nav-link">Bestenlisten</a>
+        <a data-nav="live" href="#live" class="nav-link">Live</a>
+        <a data-nav="abstimmung" href="#abstimmung" class="nav-link">Abstimmung</a>
+      </div>
       <a href="#app" class="px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-400 text-black transition">Zur Karte</a>
     </nav>
   </div>
@@ -59,6 +71,7 @@
       <a href="#app" class="px-6 py-3 rounded-full bg-amber-500 text-black hover:bg-amber-400 font-bold transition">Interaktive Karte</a>
       <a href="#gebiete" class="px-6 py-3 rounded-full border border-white/20 hover:bg-white/10 font-bold transition">Alle Gebiete</a>
     </div>
+    <div id="hero-online" class="mt-6 text-sm text-white/70 min-h-[1.5rem]"></div>
   </div>
 </section>
 
@@ -88,6 +101,41 @@
     <div class="absolute inset-0 bg-gradient-to-t from-[#1c1b19] via-transparent to-transparent"></div>
     <span class="absolute bottom-6 left-6 px-5 py-3 rounded-full bg-amber-500 text-black group-hover:bg-amber-400 font-bold transition">Karte öffnen →</span>
   </a>
+</section>
+
+<section id="shop-teaser" class="max-w-6xl mx-auto px-4 pb-24">
+  <div class="flex flex-wrap items-end justify-between gap-3 mb-8">
+    <div>
+      <h2 class="text-3xl md:text-4xl font-extrabold">Shopping District</h2>
+      <p id="shop-teaser-info" class="text-white/60 mt-2"></p>
+    </div>
+    <a href="#shops" class="text-amber-400 hover:text-amber-300 font-semibold text-sm">Alle Shops ansehen →</a>
+  </div>
+  <div id="shop-teaser-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+</section>
+
+<section id="bestenlisten" class="max-w-6xl mx-auto px-4 pb-24">
+  <div class="mb-6">
+    <h2 class="text-3xl md:text-4xl font-extrabold">Bestenlisten</h2>
+    <p id="lb-updated" class="text-white/60 mt-2"></p>
+  </div>
+  <div id="lb-tabs" class="flex flex-wrap gap-2 mb-6"></div>
+  <div id="lb-box" class="rounded-2xl border border-white/10 bg-white/5 overflow-hidden"></div>
+</section>
+
+<section id="live" class="max-w-6xl mx-auto px-4 pb-24">
+  <h2 class="text-3xl md:text-4xl font-extrabold">Live</h2>
+  <p class="text-white/60 mt-2">Wer ist gerade auf dem Server und wer streamt?</p>
+  <div class="grid lg:grid-cols-5 gap-6 mt-8">
+    <div class="lg:col-span-2 rounded-2xl border border-white/10 bg-white/5 p-5">
+      <div class="flex items-center justify-between"><h3 class="text-lg font-extrabold">Gerade online</h3><span id="live-count" class="text-sm text-white/60"></span></div>
+      <div id="live-online" class="mt-4 flex flex-col gap-2"></div>
+    </div>
+    <div class="lg:col-span-3 rounded-2xl border border-white/10 bg-white/5 p-5">
+      <div class="flex items-center justify-between"><h3 class="text-lg font-extrabold">Auf Twitch live</h3><span id="live-viewers" class="text-sm text-white/60"></span></div>
+      <div id="live-streams" class="mt-4 grid sm:grid-cols-2 gap-4"></div>
+    </div>
+  </div>
 </section>
 
 <section id="abstimmung" class="max-w-6xl mx-auto px-4 pb-24">
@@ -273,6 +321,8 @@
                     <textarea id="edit-claim-info" rows="3" placeholder="Was wurde hier gebaut?" class="bg-stone-900 border border-stone-700 rounded px-2 py-1 text-xs text-stone-200 focus:outline-none focus:border-amber-500"></textarea>
                 </div>
                 <div class="flex flex-col gap-1">
+                    <div class="flex justify-between text-[10px] text-stone-400"><span>Namen-Größe</span><span id="val-claim-fs">100%</span></div>
+                    <input type="range" id="edit-claim-fs" min="50" max="300" step="10" value="100" class="w-full h-1 bg-stone-800 rounded-lg appearance-none cursor-pointer accent-amber-500">
                     <button id="btn-label-reset" class="px-2 py-1.5 text-[11px] font-semibold rounded bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700"><i class="fa-solid fa-arrows-up-down-left-right mr-1"></i>Namen-Position zurücksetzen</button>
                     <p class="text-[10px] text-stone-500">Tipp: Den weißen Namen auf der Karte kannst du mit der Maus verschieben.</p>
                 </div>
@@ -303,27 +353,33 @@
     <div id="poi-body" class="p-4 flex flex-col gap-3 text-stone-200"></div>
   </div>
 </div>
-<div id="shop-modal" class="fixed inset-0 z-[55] bg-black/70 items-center justify-center p-4" style="display:none">
-  <div class="bg-stone-900 border border-amber-500/40 rounded-2xl shadow-2xl w-full max-w-5xl max-h-full flex flex-col overflow-hidden">
-    <div class="flex items-center gap-4 p-5 border-b border-stone-800">
+<div id="shop-page" class="fixed inset-0 z-50 bg-[#1c1b19] text-white overflow-y-auto flex-col" style="display:none">
+  <header class="sticky top-0 z-10 backdrop-blur bg-[#1c1b19]/90 border-b border-white/10">
+    <div class="flex items-center justify-between px-4 md:px-8 h-16">
+      <a href="#" class="flex items-center gap-3"><img id="logo-shop" alt="CraftCore 4" class="h-11 w-auto"><span class="hidden sm:inline text-xs font-bold uppercase tracking-widest text-white/50 border-l border-white/20 pl-3">Shops</span></a>
+      <nav class="flex items-center gap-4 text-sm font-semibold text-white/70">
+        <a href="#" class="hover:text-white">Startseite</a>
+        <a href="#app" class="px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-400 text-black transition">Zur Karte</a>
+      </nav>
+    </div>
+  </header>
+  <main class="max-w-6xl w-full mx-auto px-4 py-10">
+    <div class="flex items-center gap-4 mb-4">
       <div id="shop-icon"></div>
       <div class="min-w-0 flex-1">
         <div class="text-[10px] uppercase tracking-widest text-stone-400">Ort auf der Karte</div>
-        <h2 id="shop-title" class="viewer-only text-2xl font-extrabold text-white truncate"></h2>
-        <input id="shop-title-edit" class="admin-only w-full bg-stone-950 border border-stone-700 rounded px-2 py-1.5 text-lg font-bold text-white focus:outline-none focus:border-amber-500">
-      </div>
-      <button id="shop-close" class="text-stone-400 hover:text-white w-8 h-8 rounded hover:bg-stone-800 shrink-0"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="p-5 pb-3 flex flex-col gap-3 shrink-0">
-      <p id="shop-info" class="viewer-only text-stone-300 text-sm whitespace-pre-line"></p>
-      <textarea id="shop-info-edit" rows="2" placeholder="Beschreibung des Shopping Districts" class="admin-only w-full bg-stone-950 border border-stone-700 rounded px-2 py-1.5 text-sm text-stone-200 focus:outline-none focus:border-amber-500"></textarea>
-      <div class="flex gap-2">
-        <input id="shop-search" placeholder="Shop oder Ware suchen…" autocomplete="off" class="flex-1 bg-stone-950 border border-stone-700 rounded-lg px-3 py-2 text-sm text-stone-200 focus:outline-none focus:border-amber-500">
-        <button id="shop-add" class="admin-only px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-sm font-bold">+ Shop hinzufügen</button>
+        <h1 id="shop-title" class="viewer-only text-3xl font-extrabold text-white"></h1>
+        <input id="shop-title-edit" class="admin-only w-full bg-stone-950 border border-stone-700 rounded px-2 py-1.5 text-xl font-bold text-white focus:outline-none focus:border-amber-500">
       </div>
     </div>
-    <div id="shop-list" class="p-5 pt-2 overflow-y-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-  </div>
+    <p id="shop-info" class="viewer-only text-stone-300 whitespace-pre-line mb-6"></p>
+    <textarea id="shop-info-edit" rows="2" placeholder="Beschreibung des Shopping Districts" class="admin-only w-full bg-stone-950 border border-stone-700 rounded px-2 py-1.5 text-sm text-stone-200 focus:outline-none focus:border-amber-500 mb-6"></textarea>
+    <div class="flex gap-2 mb-6">
+      <input id="shop-search" placeholder="Shop oder Ware suchen…" autocomplete="off" class="flex-1 bg-stone-950 border border-stone-700 rounded-lg px-3 py-2 text-sm text-stone-200 focus:outline-none focus:border-amber-500">
+      <button id="shop-add" class="admin-only px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-sm font-bold">+ Shop hinzufügen</button>
+    </div>
+    <div id="shop-list" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </main>
 </div>
 <div id="lightbox" class="fixed inset-0 z-[70] bg-black/85 items-center justify-center p-6 cursor-zoom-out" style="display:none"><img id="lightbox-img" alt="" class="max-w-full max-h-full rounded-lg shadow-2xl"></div>
 <div id="admin-modal" class="fixed inset-0 z-[60] items-center justify-center bg-black/60" style="display:none">
@@ -570,7 +626,7 @@
                     const c = [base[0] + lo[0], base[1] + lo[1]];
                     const text = svgEl('text', {
                         x: c[0], y: c[1], fill: '#ffffff',
-                        'font-size': state.style.labelSize,
+                        'font-size': state.style.labelSize * ((claim.fs || 100) / 100),
                         'font-weight': 'bold',
                         'text-anchor': 'middle',
                         'dominant-baseline': 'middle',
@@ -701,6 +757,8 @@
                 document.getElementById('edit-claim-ign').value = claim.ign || '';
                 document.getElementById('edit-claim-info').value = claim.info || '';
                 renderEditImages(claim);
+                document.getElementById('edit-claim-fs').value = claim.fs || 100;
+                document.getElementById('val-claim-fs').innerText = (claim.fs || 100) + '%';
             } else if (editor) {
                 editor.classList.add('hidden');
             }
@@ -896,12 +954,16 @@
 const appEl = document.getElementById('app');
 let started = false;
 function route() {
-  const open = location.hash === '#app';
+  const hash = location.hash;
+  const open = hash === '#app', shops = hash === '#shops';
   appEl.style.display = open ? 'flex' : 'none';
-  document.body.style.overflow = open ? 'hidden' : '';
+  document.getElementById('shop-page').style.display = shops ? 'flex' : 'none';
+  document.body.style.overflow = (open || shops) ? 'hidden' : '';
   if (open) {
     if (!started) { started = true; init(); } else centerMap();
   }
+  if (shops) { renderShopModal(); document.getElementById('shop-page').scrollTop = 0; }
+  if (!open && !shops && typeof updateNavPill === 'function') requestAnimationFrame(updateNavPill);
 }
 window.addEventListener('hashchange', route);
 document.getElementById('preview').src = document.getElementById('map-image').src;
@@ -985,7 +1047,7 @@ function renderInfoCard() {
   const card = document.getElementById('info-card');
   const claim = getActiveClaim();
   if (!claim) { card.style.display = 'none'; lastInfoKey = null; return; }
-  const key = [claim.id, claim.name, claim.color, claim.ign || '', claim.info || '', (claim.images || []).length, isAdmin].join('|');
+  const key = [claim.id, claim.name, claim.color, claim.ign || '', claim.info || '', (claim.images || []).length, isAdmin, stats.fetchedAt].join('|');
   if (key === lastInfoKey) return;
   lastInfoKey = key;
   card.style.display = 'flex';
@@ -995,23 +1057,8 @@ function renderInfoCard() {
   const players = document.getElementById('info-players');
   players.innerHTML = '';
   const names = (claim.ign || '').split(/[,&+]/).map(s => s.trim()).filter(Boolean);
-  names.forEach(n => {
-    const wrap = document.createElement('div');
-    wrap.className = 'flex flex-col items-center gap-2';
-    const img = document.createElement('img');
-    img.src = 'https://minotar.net/helm/' + encodeURIComponent(n) + '/96.png';
-    img.alt = n;
-    img.className = 'w-16 h-16 rounded';
-    img.style.imageRendering = 'pixelated';
-    img.onerror = () => { img.style.visibility = 'hidden'; };
-    const tag = document.createElement('span');
-    tag.className = 'px-2 py-0.5 text-xs text-white font-mono';
-    tag.style.background = 'rgba(0,0,0,.6)';
-    tag.style.textShadow = '1px 1px 0 #3f3f3f';
-    tag.textContent = n;
-    wrap.append(img, tag);
-    players.appendChild(wrap);
-  });
+  players.className = 'flex flex-col gap-4';
+  names.forEach(n => players.appendChild(playerBlock(n)));
   players.style.display = names.length ? 'flex' : 'none';
 
   const text = document.getElementById('info-text');
@@ -1244,7 +1291,7 @@ document.getElementById('btn-add-poi').addEventListener('click', () => {
 let poiOpenId = null;
 function openPoi(id) {
   const p = (site.pois || []).find(q => q.id === id); if (!p) return;
-  if (p.type === 'shopping') { shopOpen = true; renderShopModal(); return; }
+  if (p.type === 'shopping') { location.hash = '#shops'; return; }
   poiOpenId = id; renderPoiModal();
 }
 function renderPoiModal() {
@@ -1291,24 +1338,39 @@ $('poi-close').addEventListener('click', () => { poiOpenId = null; renderPoiModa
 $('poi-modal').addEventListener('mousedown', e => { if (e.target === $('poi-modal')) { poiOpenId = null; renderPoiModal(); } });
 
 // ---- Shopping District
-let shopOpen = false;
 function renderShopModal() {
-  const m = $('shop-modal');
   const p = (site.pois || []).find(q => q.id === 'shopping');
-  if (!shopOpen || !p) { m.style.display = 'none'; return; }
-  m.style.display = 'flex';
+  if (!p) return;
   $('shop-icon').innerHTML = pixelSvg('shopping', 4);
   $('shop-title').textContent = p.name;
-  $('shop-title-edit').value = p.name;
+  if (document.activeElement !== $('shop-title-edit')) $('shop-title-edit').value = p.name;
   $('shop-info').textContent = p.info || '';
-  $('shop-info-edit').value = p.info || '';
+  if (document.activeElement !== $('shop-info-edit')) $('shop-info-edit').value = p.info || '';
   renderShopList();
+  renderShopTeaser();
 }
-$('shop-title-edit').addEventListener('input', e => { const p = site.pois.find(q => q.id === 'shopping'); p.name = e.target.value; $('shop-title').textContent = p.name; renderPois(); });
-$('shop-info-edit').addEventListener('input', e => { const p = site.pois.find(q => q.id === 'shopping'); p.info = e.target.value; $('shop-info').textContent = p.info; });
+$('shop-title-edit').addEventListener('input', e => { const p = site.pois.find(q => q.id === 'shopping'); p.name = e.target.value; $('shop-title').textContent = p.name; renderPois(); renderShopTeaser(); });
+$('shop-info-edit').addEventListener('input', e => { const p = site.pois.find(q => q.id === 'shopping'); p.info = e.target.value; $('shop-info').textContent = p.info; renderShopTeaser(); });
 $('shop-search').addEventListener('input', () => renderShopList());
-$('shop-close').addEventListener('click', () => { shopOpen = false; renderShopModal(); });
-$('shop-modal').addEventListener('mousedown', e => { if (e.target === $('shop-modal')) { shopOpen = false; renderShopModal(); } });
+function shopCardView(s) {
+  const card = el('a', 'rounded-xl border border-stone-700 bg-stone-800/60 p-3 flex flex-col gap-3 hover:border-amber-500/60 transition');
+  card.href = '#shops';
+  const imgs = s.images || [];
+  if (imgs.length) { const m = el('img', 'w-full h-36 object-cover rounded-lg'); m.src = imgs[0]; m.loading = 'lazy'; card.appendChild(m); }
+  const t = el('div', 'font-extrabold text-white text-lg'); t.textContent = s.name || 'Shop'; card.appendChild(t);
+  splitNames(s.owner).forEach(n => card.appendChild(nameChip(n)));
+  if (s.sells) { const d = el('p', 'text-sm text-stone-300 whitespace-pre-line line-clamp-3'); d.textContent = s.sells; card.appendChild(d); }
+  return card;
+}
+function renderShopTeaser() {
+  const g = $('shop-teaser-grid'); if (!g) return;
+  const p = (site.pois || []).find(q => q.id === 'shopping');
+  $('shop-teaser-info').textContent = (p && p.info) || 'Hier findest du die Shops aller Spieler.';
+  g.innerHTML = '';
+  const shops = (site.shops || []).slice(0, 3);
+  if (!shops.length) { g.appendChild(el('p', 'text-white/50 text-sm sm:col-span-2 lg:col-span-3', 'Bald gibt es hier die ersten Shops.')); return; }
+  shops.forEach(s => g.appendChild(shopCardView(s)));
+}
 $('shop-add').addEventListener('click', () => {
   site.shops.unshift({ id: 's' + Date.now().toString(36), name: 'Neuer Shop', owner: '', sells: '', images: [] });
   $('shop-search').value = ''; renderShopList(); saveLocal();
@@ -1510,7 +1572,7 @@ function pollAdmin(p) {
   const db = el('div', 'border-t border-white/10 pt-4');
   db.innerHTML = '<label class="text-[10px] text-stone-400">Datenbank-Adresse (Firebase Realtime Database, für die Stimmen aller Besucher)</label><input id="vote-db" class="' + INP + '" placeholder="https://DEINPROJEKT-default-rtdb.europe-west1.firebasedatabase.app" value="' + esc(site.voteDb) + '">';
   db.querySelector('input').addEventListener('input', e => { site.voteDb = e.target.value; });
-  db.querySelector('input').addEventListener('change', () => { voteCache = {}; refreshVoteView(); });
+  db.querySelector('input').addEventListener('change', () => { voteCache = {}; refreshVoteView(); loadStats(); });
   box.appendChild(db);
   return box;
 }
@@ -1569,7 +1631,184 @@ setInterval(() => {
 }, 20000);
 
 // Esc schließt Fenster
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { shopOpen = false; poiOpenId = null; renderShopModal(); renderPoiModal(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { poiOpenId = null; renderPoiModal(); } });
+
+// ================= Stats vom Server (über die Datenbank) =================
+let stats = { players: {}, server: null, live: null, fetchedAt: 0, error: false, loaded: false };
+const nf = new Intl.NumberFormat('de-DE');
+const pkey = n => String(n).trim().toLowerCase().replace(/[.#$\[\]\/]/g, '_');
+const serverFresh = () => !!(stats.server && stats.server.updated && Date.now() - stats.server.updated < 4 * 60 * 1000);
+const statOf = n => stats.players[pkey(n)] || null;
+const isOnline = n => { const s = statOf(n); return !!(s && s.online && serverFresh()); };
+function fmtMin(min) { min = Math.round(min || 0); const hh = Math.floor(min / 60), m = min % 60; if (hh >= 48) return nf.format(hh) + ' Std'; return hh ? hh + ' Std ' + m + ' Min' : m + ' Min'; }
+const fmtKm = m => nf.format(Math.round((m || 0) / 100) / 10) + ' km';
+function agoText(ts) {
+  const m = Math.floor((Date.now() - ts) / 60000);
+  if (m < 1) return 'gerade eben'; if (m < 60) return 'vor ' + m + ' Min';
+  const hh = Math.floor(m / 60); if (hh < 48) return 'vor ' + hh + ' Std';
+  return 'vor ' + Math.floor(hh / 24) + ' Tagen';
+}
+async function loadStats() {
+  const base = dbUrl();
+  if (!base) { renderStatsViews(); return; }
+  try {
+    const get = async path => { const r = await fetch(base + path + '.json'); if (!r.ok) throw new Error(path); return r.json(); };
+    const [pl, sv, lv] = await Promise.all([get('/players'), get('/server'), get('/live')]);
+    stats = { players: pl || {}, server: sv, live: lv, fetchedAt: Date.now(), error: false, loaded: true };
+  } catch (e) { stats.error = true; }
+  renderStatsViews();
+}
+function liveStreams() {
+  const lv = stats.live;
+  if (!lv || !lv.updated || Date.now() - lv.updated > 6 * 60 * 1000 || !lv.streams) return [];
+  return Object.values(lv.streams).filter(s => s && /^[A-Za-z0-9_]{1,25}$/.test(s.login || '')).sort((a, b) => (b.viewers || 0) - (a.viewers || 0));
+}
+function playerBlock(n) {
+  const s = statOf(n), online = isOnline(n);
+  const w = el('div', 'flex gap-3 items-start');
+  const im = el('img', 'w-12 h-12 rounded shrink-0'); im.src = headUrl(n); im.alt = n; im.style.imageRendering = 'pixelated'; im.onerror = () => { im.style.visibility = 'hidden'; };
+  const col = el('div', 'min-w-0 flex-1 flex flex-col gap-1.5');
+  const tag = el('span', 'self-start px-2 py-0.5 text-xs text-white font-mono'); tag.style.background = 'rgba(0,0,0,.6)'; tag.style.textShadow = '1px 1px 0 #3f3f3f'; tag.textContent = n;
+  const st = el('div', 'flex items-center gap-1.5 text-xs ' + (online ? 'text-emerald-400' : 'text-stone-400'));
+  const dot = el('span', 'w-2 h-2 rounded-full ' + (online ? 'bg-emerald-400' : 'bg-stone-600'));
+  const txt = el('span'); txt.textContent = online ? 'Online' : (s && s.lastSeen ? 'Zuletzt online ' + agoText(s.lastSeen) : (stats.loaded ? 'Noch keine Daten' : 'Keine Daten'));
+  st.append(dot, txt);
+  col.append(tag, st);
+  if (s) {
+    const g = el('div', 'grid grid-cols-2 gap-x-3 gap-y-1 text-xs');
+    [['Spielzeit', fmtMin(s.playtimeMin)], ['Blöcke', nf.format(s.mined || 0)], ['Strecke', fmtKm(s.distanceM)], ['AFK', fmtMin(s.afkMin)]].forEach(([k, v]) => {
+      const c = el('div'); const a = el('div', 'text-[10px] uppercase tracking-widest text-stone-500'); a.textContent = k; const b = el('div', 'text-stone-200 font-semibold'); b.textContent = v; c.append(a, b); g.appendChild(c);
+    });
+    col.appendChild(g);
+    if (s.twitch && /^[A-Za-z0-9_]{1,25}$/.test(s.twitch)) {
+      const live = liveStreams().some(x => x.login.toLowerCase() === String(s.twitch).toLowerCase());
+      const a = el('a', 'self-start inline-flex items-center gap-1.5 text-xs font-semibold ' + (live ? 'text-red-400' : 'text-purple-300') + ' hover:underline');
+      a.href = 'https://twitch.tv/' + s.twitch; a.target = '_blank'; a.rel = 'noopener';
+      a.innerHTML = '<i class="fa-brands fa-twitch"></i><span></span>'; a.querySelector('span').textContent = live ? 'Live auf Twitch' : 'twitch.tv/' + s.twitch;
+      col.appendChild(a);
+    }
+  }
+  w.append(im, col);
+  return w;
+}
+
+// ---- Bestenlisten
+let lbMetric = 'playtimeMin';
+const LB = {
+  playtimeMin: { label: 'Spielzeit', fmt: fmtMin, icon: 'fa-clock' },
+  avgHoursPerDay: { label: 'Ø pro Tag', fmt: v => (Math.round(v * 10) / 10).toLocaleString('de-DE') + ' Std/Tag', icon: 'fa-chart-line' },
+  mined: { label: 'Abgebaute Blöcke', fmt: v => nf.format(v), icon: 'fa-hammer' },
+  distanceM: { label: 'Strecke', fmt: fmtKm, icon: 'fa-person-walking' },
+  afkMin: { label: 'AFK-Zeit', fmt: fmtMin, icon: 'fa-bed' }
+};
+function renderLeaderboard() {
+  const box = $('lb-box'), tabs = $('lb-tabs'); if (!box) return;
+  tabs.innerHTML = '';
+  Object.entries(LB).forEach(([k, d]) => {
+    const b = el('button', 'px-4 py-2 rounded-full text-sm font-semibold border transition ' + (k === lbMetric ? 'bg-amber-500 text-black border-amber-500' : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10'), '<i class="fa-solid ' + d.icon + ' mr-2"></i>' + d.label);
+    b.addEventListener('click', () => { lbMetric = k; renderLeaderboard(); });
+    tabs.appendChild(b);
+  });
+  $('lb-updated').textContent = serverFresh() ? 'Aktualisiert ' + agoText(stats.server.updated) + ' · Server online' : (stats.loaded ? 'Server gerade offline, letzter bekannter Stand' : '');
+  box.innerHTML = '';
+  const msg = t => box.appendChild(el('div', 'p-8 text-center text-white/60 text-sm', t));
+  if (!dbUrl()) return msg('Die Datenbank ist noch nicht verbunden.');
+  if (stats.error && !stats.loaded) return msg('Die Stats konnten nicht geladen werden. Prüfe die Regeln der Datenbank.');
+  const rows = Object.values(stats.players).filter(p => p && p.name && typeof p[lbMetric] === 'number').sort((a, b) => b[lbMetric] - a[lbMetric]).slice(0, 10);
+  if (!rows.length) return msg('Die Bestenlisten füllen sich, sobald der Server Daten sendet.');
+  const max = rows[0][lbMetric] || 1;
+  const medal = ['text-amber-400', 'text-stone-300', 'text-orange-500'];
+  rows.forEach((p, i) => {
+    const r = el('div', 'flex items-center gap-4 px-4 py-3 border-b border-white/5 last:border-0');
+    const rank = el('div', 'w-8 text-center font-extrabold ' + (medal[i] || 'text-white/40'), i < 3 ? '<i class="fa-solid fa-medal"></i>' : String(i + 1));
+    const im = el('img', 'w-9 h-9 rounded'); im.src = headUrl(p.name); im.style.imageRendering = 'pixelated'; im.onerror = () => { im.style.visibility = 'hidden'; };
+    const mid = el('div', 'min-w-0 flex-1');
+    const nm = el('div', 'font-bold flex items-center gap-2'); const ns = el('span'); ns.textContent = p.name; nm.appendChild(ns);
+    if (isOnline(p.name)) nm.appendChild(el('span', 'w-2 h-2 rounded-full bg-emerald-400'));
+    const bar = el('div', 'mt-1 h-1.5 rounded bg-white/10 overflow-hidden', '<div class="h-full bg-amber-500" style="width:' + Math.max(2, Math.round(p[lbMetric] / max * 100)) + '%"></div>');
+    mid.append(nm, bar);
+    const val = el('div', 'text-right font-extrabold text-amber-300 whitespace-nowrap'); val.textContent = LB[lbMetric].fmt(p[lbMetric]);
+    r.append(rank, im, mid, val); box.appendChild(r);
+  });
+}
+
+// ---- Live: online + Twitch
+function renderLive() {
+  const on = $('live-online'); if (!on) return;
+  const fresh = serverFresh();
+  const names = fresh ? Object.values(stats.players).filter(p => p && p.online && p.name).map(p => p.name).sort((a, b) => a.localeCompare(b)) : [];
+  on.innerHTML = '';
+  $('live-count').textContent = fresh ? names.length + (stats.server.max ? ' von ' + stats.server.max : '') : '';
+  if (!dbUrl()) on.appendChild(el('p', 'text-white/50 text-sm', 'Die Datenbank ist noch nicht verbunden.'));
+  else if (!stats.loaded) on.appendChild(el('p', 'text-white/50 text-sm', stats.error ? 'Daten konnten nicht geladen werden.' : 'Lade …'));
+  else if (!fresh) on.appendChild(el('p', 'text-white/50 text-sm', 'Der Server ist gerade offline.'));
+  else if (!names.length) on.appendChild(el('p', 'text-white/50 text-sm', 'Gerade ist niemand online.'));
+  else names.forEach(n => on.appendChild(nameChip(n)));
+  const box = $('live-streams'); box.innerHTML = '';
+  const ls = liveStreams();
+  const total = ls.reduce((a, s) => a + (s.viewers || 0), 0);
+  $('live-viewers').textContent = ls.length ? nf.format(total) + ' Zuschauer' : '';
+  if (!ls.length) { box.appendChild(el('p', 'text-white/50 text-sm sm:col-span-2', stats.loaded ? 'Gerade streamt niemand.' : '')); }
+  ls.forEach(s => {
+    const a = el('a', 'group rounded-xl overflow-hidden border border-white/10 bg-stone-900/70 hover:border-purple-400/70 transition flex flex-col');
+    a.href = 'https://twitch.tv/' + s.login; a.target = '_blank'; a.rel = 'noopener';
+    const th = el('div', 'relative aspect-video bg-stone-800');
+    if (/^https:\/\//.test(s.thumb || '')) { const im = el('img', 'w-full h-full object-cover'); im.src = String(s.thumb).replace('{width}', '440').replace('{height}', '248'); im.loading = 'lazy'; th.appendChild(im); }
+    th.appendChild(el('span', 'absolute top-2 left-2 px-2 py-0.5 rounded bg-red-600 text-white text-[10px] font-bold uppercase tracking-wider', 'Live'));
+    const vw = el('span', 'absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/70 text-white text-xs font-semibold'); vw.textContent = nf.format(s.viewers || 0) + ' Zuschauer'; th.appendChild(vw);
+    const body = el('div', 'p-3 flex flex-col gap-1');
+    const t = el('div', 'text-sm font-bold text-white line-clamp-2'); t.textContent = s.title || '';
+    const who = el('div', 'text-xs text-purple-300 font-semibold'); who.textContent = (s.name || s.login) + (s.owner && s.owner.toLowerCase() !== String(s.name || s.login).toLowerCase() ? ' · ' + s.owner : '');
+    body.append(t, who);
+    if (s.craftcore) body.appendChild(el('span', 'self-start mt-1 px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold uppercase tracking-wider', 'CraftCore'));
+    a.append(th, body); box.appendChild(a);
+  });
+}
+function renderHeroOnline() {
+  const e = $('hero-online'); if (!e) return;
+  e.innerHTML = '';
+  if (!serverFresh()) return;
+  const n = Object.values(stats.players).filter(p => p && p.online).length;
+  const ls = liveStreams().length;
+  e.innerHTML = '<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10"><span class="w-2 h-2 rounded-full bg-emerald-400"></span><span></span></span>';
+  e.querySelector('span span:last-child').textContent = n + (n === 1 ? ' Spieler online' : ' Spieler online') + (ls ? ' · ' + ls + ' live auf Twitch' : '');
+}
+function renderStatsViews() {
+  renderLeaderboard(); renderLive(); renderHeroOnline();
+  if (typeof renderInfoCard === 'function') renderInfoCard();
+  requestAnimationFrame(updateNavPill);
+}
+loadStats();
+setInterval(loadStats, 60000);
+
+// ---- Navigation: Markierung gleitet beim Scrollen von Abschnitt zu Abschnitt
+const NAV_SECTIONS = ['gebiete', 'kartenvorschau', 'shop-teaser', 'bestenlisten', 'live', 'abstimmung'];
+function updateNavPill() {
+  const nav = $('main-nav'), pill = $('nav-pill');
+  if (!nav || !pill || nav.offsetParent === null) return;
+  const links = NAV_SECTIONS.map(id => nav.querySelector('[data-nav="' + id + '"]'));
+  const tops = NAV_SECTIONS.map(id => { const e = $(id); return e ? e.getBoundingClientRect().top + window.scrollY : 0; });
+  const y = window.scrollY + 160;
+  let i = -1; tops.forEach((t, k) => { if (y >= t) i = k; });
+  if (i < 0) { pill.style.opacity = '0'; links.forEach(l => l.classList.remove('active')); return; }
+  const j = Math.min(i + 1, links.length - 1);
+  const f = i < tops.length - 1 ? Math.min(1, Math.max(0, (y - tops[i]) / (tops[i + 1] - tops[i]))) : 0;
+  const nr = nav.getBoundingClientRect(), a = links[i].getBoundingClientRect(), b = links[j].getBoundingClientRect();
+  pill.style.opacity = '1';
+  pill.style.width = (a.width * (1 - f) + b.width * f) + 'px';
+  pill.style.transform = 'translateX(' + ((a.left - nr.left) * (1 - f) + (b.left - nr.left) * f) + 'px)';
+  links.forEach((l, k) => l.classList.toggle('active', k === (f > 0.5 ? j : i)));
+}
+let navTick = false;
+window.addEventListener('scroll', () => { if (!navTick) { navTick = true; requestAnimationFrame(() => { navTick = false; updateNavPill(); }); } }, { passive: true });
+window.addEventListener('resize', updateNavPill);
+window.addEventListener('load', updateNavPill);
+
+// Namen-Größe
+$('edit-claim-fs').addEventListener('input', e => {
+  const c = getActiveClaim(); if (!c) return;
+  c.fs = +e.target.value; $('val-claim-fs').textContent = c.fs + '%'; render();
+});
 
 document.getElementById('btn-label-reset').addEventListener('click', () => {
   const c = getActiveClaim();
@@ -1610,7 +1849,9 @@ try { if (sessionStorage.getItem('cc4_admin') === '1') { isAdmin = true; documen
 applyLocal();
 renderPois();
 renderVotes();
+renderShopModal();
 document.getElementById('logo-small').src = document.getElementById('logo-big').src;
+document.getElementById('logo-shop').src = document.getElementById('logo-big').src;
 document.getElementById('logo-tool').src = document.getElementById('logo-big').src;
 route();
 </script>
